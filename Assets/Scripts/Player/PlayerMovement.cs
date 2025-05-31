@@ -92,4 +92,9 @@ public class PlayerMovement : MonoBehaviour, IUpdatable
         characterController.Move(totalMove * Time.deltaTime);
     }
 
+    public Vector2 getVectorInput()
+    {
+        return moveInput;
+    }
+
 }
