@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour, IUpdatable
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private float gravity = 9.8f;
+    [SerializeField] private float rotationSmoothTime = 0.5f; // Added this parameter
 
 
     [Header("References")]
@@ -80,11 +81,23 @@ public class PlayerMovement : MonoBehaviour, IUpdatable
 
         if (inputDir.sqrMagnitude >= 0.1f)
         {
+            // Check if moving backward
+            bool isMovingBackward = moveInput.y < 0;
+            
+            // If moving backward, flip the direction
+            if (isMovingBackward)
+            {
+                inputDir.z = -inputDir.z; // Invert Z direction (forward/backward)
+                inputDir.x = -inputDir.x; // Invert X direction (left/right)
+            }
+            
             float targetAngle = Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref smoothVelocity, 0.1f);
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref smoothVelocity, rotationSmoothTime);
             transform.rotation = Quaternion.Euler(0, angle, 0);
 
-            moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
+            // Use original input for movement direction
+            Vector3 originalInputDir = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+            moveDir = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0) * originalInputDir;
         }
 
         // Gộp chuyển động ngang và dọc

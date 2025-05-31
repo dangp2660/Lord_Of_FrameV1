@@ -10,7 +10,6 @@ public class PlayerAnimationManager : CharacterAnimationManager, IUpdatable
     private void Awake()
     {
         movement = GetComponent<PlayerMovement>();
-        characterAnimator = GetComponentInChildren<Animator>();
         if(movement == null )
         {
             Debug.LogWarning("Movement in animation is null");

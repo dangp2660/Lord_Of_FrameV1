@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 2709423640830918983}
   - component: {fileID: 8802014081135098466}
   - component: {fileID: 8590165598809607109}
+  - component: {fileID: 7499106018830834651}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -395,7 +396,21 @@ MonoBehaviour:
   moveSpeed: 10
   jumpForce: 5
   gravity: 9.8
+  rotationSmoothTime: 0.5
   cameraTransform: {fileID: 5316905192380086498}
+--- !u!114 &7499106018830834651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5316905192914145728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de81a29ba124edb42ba4e58df2e39202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterAnimator: {fileID: 3750948466286639324}
 --- !u!1 &8039707599602030045
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,6 +450,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5316905192914145734}
     m_Modifications:
+    - target: {fileID: 936311123916893580, guid: be18a0c0638334a47b0b4d895249486c,
+        type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 0ad932253e8dc8841948afa5d1a0d051, type: 3}
     - target: {fileID: 5860747143582428492, guid: be18a0c0638334a47b0b4d895249486c,
         type: 3}
       propertyPath: m_Name
@@ -495,6 +515,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be18a0c0638334a47b0b4d895249486c, type: 3}
+--- !u!95 &3750948466286639324 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 936311123916893580, guid: be18a0c0638334a47b0b4d895249486c,
+    type: 3}
+  m_PrefabInstance: {fileID: 4102913126404429136}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7128678232172421798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6493731982192539638, guid: be18a0c0638334a47b0b4d895249486c,

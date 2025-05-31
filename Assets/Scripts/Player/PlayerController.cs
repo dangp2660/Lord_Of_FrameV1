@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private PlayerMovement movement;
     private void Awake()
     {
+
         movement = GetComponent<PlayerMovement>();
     }
 
