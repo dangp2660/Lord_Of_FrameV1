@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerManager : CharacterManager
 {
-    PlayerMovementManager movementManager;
+    [HideInInspector] public PlayerMovementManager movementManager;
+    [HideInInspector] public PlayerAnimationManager animationManager;
     protected override void Awake()
     {
         base.Awake();
 
         movementManager = GetComponent<PlayerMovementManager>();
+        animationManager = GetComponent<PlayerAnimationManager>();
     }
 
     public override void OnUpdate()

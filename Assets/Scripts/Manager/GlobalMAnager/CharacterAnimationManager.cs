@@ -4,26 +4,16 @@ using UnityEngine;
 
 public class CharacterAnimationManager : MonoBehaviour
 {
-    [SerializeField] protected Animator characterAnimator;
+    [SerializeField] private CharacterManager characterManager;
     private void Start()
     {
-        if(characterAnimator == null)
-        {
-            // Try to get the Animator component if not assigned
-            characterAnimator = GetComponent<Animator>();
-            
-            if(characterAnimator == null)
-            {
-                Debug.LogError("Animator is null and couldn't be found on this GameObject");
-            }
-        }
+        characterManager = GetComponent<CharacterManager>();
     }
     public void updateAnimatorMovementParamaters(float horizontal, float vertical)
     {
-        if(characterAnimator != null)
-        {
-            characterAnimator.SetFloat(AnimationStringList.Horizontal, horizontal); 
-            characterAnimator.SetFloat(AnimationStringList.Vertical, vertical); 
-        }
+
+            characterManager.animator.SetFloat(AnimationStringList.Horizontal, horizontal,0.1f,Time.deltaTime);
+            characterManager.animator.SetFloat(AnimationStringList.Vertical, vertical, 0.1f, Time.deltaTime); 
+
     }
 }

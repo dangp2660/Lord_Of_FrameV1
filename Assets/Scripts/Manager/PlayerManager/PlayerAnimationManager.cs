@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerAnimationManager : CharacterAnimationManager, IUpdatable
 {
-    //Variables to animation
 
     private void Awake()
     {
@@ -22,7 +21,14 @@ public class PlayerAnimationManager : CharacterAnimationManager, IUpdatable
 
     public void OnUpdate()
     {
+        updateMove();
     }
+
+    private void updateMove()
+    {
+   ;     updateAnimatorMovementParamaters(0, PlayerInputManager.Instance.getMoveAmount());
+    }
+
 
 
 }

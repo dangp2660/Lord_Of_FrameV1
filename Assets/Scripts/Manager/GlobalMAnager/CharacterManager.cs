@@ -5,11 +5,17 @@ using UnityEngine;
 public class CharacterManager : MonoBehaviour, IUpdatable
 {
 
-    public CharacterController characterController;
+    [HideInInspector] public CharacterController characterController;
+    [HideInInspector] public Animator animator;
     protected virtual void Awake()
     {
         DontDestroyOnLoad(gameObject);
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+        if(animator ==  null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
     }
     private void OnEnable()
     {

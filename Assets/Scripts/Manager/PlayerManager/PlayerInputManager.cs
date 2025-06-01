@@ -9,6 +9,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     InputSystem inputActions;
     public Vector2 movementInput;
     public Vector2 cameraInput;
+    public PlayerManager player;
     [SerializeField] private float moveAmount;
     private void Awake()
     {
@@ -55,10 +56,16 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         }
 
         inputActions.Enable();
+        
+        // Register with UpdateManager
+        UpdateManager.Register(this);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
+        // Unregister from UpdateManager
+        UpdateManager.Unregister(this);
+        
         SceneManager.activeSceneChanged -= OnSceneChange;
     }
 
@@ -74,6 +81,8 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         {
             moveAmount = 1;
         }
+
+                
     }
     public float getMoveAmount()
     {

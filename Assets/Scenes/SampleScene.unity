@@ -242,7 +242,7 @@ PrefabInstance:
     - target: {fileID: 2709423640830918983, guid: 4a7a19b401505b8439db87f68f2179fb,
         type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2709423640830918983, guid: 4a7a19b401505b8439db87f68f2179fb,
         type: 3}
@@ -251,8 +251,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2709423640830918983, guid: 4a7a19b401505b8439db87f68f2179fb,
         type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_ActionId
+      value: 7ad0ca57-7e64-41d3-83ef-34895dff99d8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2709423640830918983, guid: 4a7a19b401505b8439db87f68f2179fb,
+        type: 3}
       propertyPath: m_ActionEvents.Array.data[0].m_ActionName
       value: Player Movement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+      objectReference: {fileID: 0}
+    - target: {fileID: 2709423640830918983, guid: 4a7a19b401505b8439db87f68f2179fb,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_ActionName
+      value: Player Camera/Movement[/Mouse/delta/up,/Mouse/delta/down,/Mouse/delta/left,/Mouse/delta/right]
       objectReference: {fileID: 0}
     - target: {fileID: 2709423640830918983, guid: 4a7a19b401505b8439db87f68f2179fb,
         type: 3}
@@ -314,6 +324,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7499106018830834651, guid: 4a7a19b401505b8439db87f68f2179fb,
+        type: 3}
+      propertyPath: characterManager
+      value: 
+      objectReference: {fileID: 1198783589}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -350,6 +365,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementInput: {x: 0, y: 0}
   cameraInput: {x: 0, y: 0}
+  player: {fileID: 0}
   moveAmount: 0
 --- !u!4 &284076669
 Transform:
