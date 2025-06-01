@@ -8,6 +8,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     public static PlayerInputManager Instance;
     InputSystem inputActions;
     public Vector2 movementInput;
+    public Vector2 cameraInput;
     [SerializeField] private float moveAmount;
     private void Awake()
     {
@@ -50,6 +51,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
             inputActions = new InputSystem();
 
             inputActions.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
+            inputActions.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
         }
 
         inputActions.Enable();
@@ -77,5 +79,6 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     {
         return moveAmount;
     }
+
 
 }//PlayerInputManager
