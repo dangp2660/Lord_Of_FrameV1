@@ -18,4 +18,12 @@ public class PlayerManager : CharacterManager
 
         movementManager.handleAllMovements();
     }
+
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+
+        CameraController.instance.handleAllCameraActions();
+    }
+
 }

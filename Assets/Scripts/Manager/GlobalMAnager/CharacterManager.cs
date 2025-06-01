@@ -26,5 +26,10 @@ public class CharacterManager : MonoBehaviour, IUpdatable
 
     }
 
+    protected virtual void LateUpdate()
+    {
+
+    }
+
 
 }
