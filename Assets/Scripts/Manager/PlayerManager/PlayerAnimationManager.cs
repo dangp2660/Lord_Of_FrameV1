@@ -26,7 +26,8 @@ public class PlayerAnimationManager : CharacterAnimationManager, IUpdatable
 
     private void updateMove()
     {
-   ;     updateAnimatorMovementParamaters(0, PlayerInputManager.Instance.getMoveAmount());
+        updateAnimatorMovementParamaters(0, PlayerInputManager.Instance.getMoveAmount());
+        
     }
 
 
