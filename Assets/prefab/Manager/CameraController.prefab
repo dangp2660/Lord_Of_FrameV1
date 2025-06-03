@@ -215,11 +215,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerManager: {fileID: 0}
-  cameraPivotTransform: {fileID: 0}
+  cameraPivotTransform: {fileID: 7733472973399123933}
   mainCam: {fileID: 5885868915955737074}
-  leftAndRightRotationSpeed: 220
-  upAndDownRotationSpeed: 220
+  leftAndRightRotationSpeed: 30
+  upAndDownRotationSpeed: 30
   miniumPivot: -30
   maxiumPivot: 60
+  cameraCollisionOffset: 0.2
+  colliderWithLayer:
+    serializedVersion: 2
+    m_Bits: 1
   leftAndRightLookAngle: 0
   upAndDownLookAngle: 0

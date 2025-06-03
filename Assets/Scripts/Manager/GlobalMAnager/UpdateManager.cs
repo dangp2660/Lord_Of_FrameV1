@@ -24,6 +24,7 @@ public class UpdateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("HI");
         foreach (var updatable in updatables)
         {
             updatable.OnUpdate();
