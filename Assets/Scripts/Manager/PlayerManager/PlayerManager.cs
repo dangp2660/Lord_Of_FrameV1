@@ -25,7 +25,7 @@ public class PlayerManager : CharacterManager
     {
         base.LateUpdate();
 
-        CameraController.instance.handleAllCameraActions();
+        CameraController.instance.HandleAllCameraActions();
     }
 
 }

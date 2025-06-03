@@ -54,8 +54,8 @@ public class PlayerMovementManager : CharacterMovementManager
     private void handleRotation()
     {
         targetRotationDirection = Vector3.zero;
-        targetRotationDirection = CameraController.instance.mainCam.transform.forward * verticalMovement;
-        targetRotationDirection += CameraController.instance.mainCam.transform.transform.right * horizontalMovement;
+        targetRotationDirection = CameraController.instance.cameraObject.transform.forward * verticalMovement;
+        targetRotationDirection += CameraController.instance.cameraObject.transform.transform.right * horizontalMovement;
         targetRotationDirection.Normalize();
         targetRotationDirection.y = 0;
 

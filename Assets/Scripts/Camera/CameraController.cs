@@ -1,29 +1,35 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
-    [SerializeField] private PlayerManager playerManager;
-    [SerializeField] private Transform cameraPivotTransform;
 
-    public Camera mainCam;
-    [Header("Camera setting")]
-    private float cameraSmoothSpeed = 1f;
-    private Vector3 mainCamPos;
+    [Header("References")]
+    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private Transform cameraPivotTransform; // Xoay lên/xuống
+    public Camera cameraObject; // Camera chính
+
+    [Header("Camera Settings")]
+    [SerializeField] private float cameraSmoothSpeed = 1f;
     [SerializeField] private float leftAndRightRotationSpeed = 220f;
     [SerializeField] private float upAndDownRotationSpeed = 220f;
-    [SerializeField] private float miniumPivot = -30;// lowest point look down  
-    [SerializeField] private float maxiumPivot = 60;// highest point look up
-    [SerializeField] private float cameraCollisionOffset = 0.2f;
+    [SerializeField] private float miniumPivot = -30f;
+    [SerializeField] private float maxiumPivot = 60f;
+    [SerializeField] private float cameraCollisionRadius = 0.2f;
     [SerializeField] private LayerMask colliderWithLayer;
 
-    [Header("Camera value")]
-    private Vector3 cameraValocity;
+    [Header("Camera Position Offsets")]
+    [SerializeField] private float defaultCameraZOffset = -4f;
+    [SerializeField] private float cameraPivotHeight = 1.8f;
+
+    [Header("Debug/State Values")]
     [SerializeField] private float leftAndRightLookAngle;
     [SerializeField] private float upAndDownLookAngle;
-    private float defaultCameraPosition;//Used for camera colliion
-    private float targetCameraPostion;//Used for camera collistion
+
+    private Vector3 cameraVelocity;
+    private Vector3 cameraPos;
+    private float targetCameraZPosition;
+    private float currentCameraZPosition;
 
     private void Awake()
     {
@@ -40,74 +46,81 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        defaultCameraPosition = mainCam.transform.position.z;
+
+        // Đặt pivot chiều cao và camera offset ban đầu
+        cameraPivotTransform.localPosition = new Vector3(0, cameraPivotHeight, 0);
+        cameraObject.transform.localPosition = new Vector3(0, 0, defaultCameraZOffset);
+        currentCameraZPosition = defaultCameraZOffset;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-
-    public void handleAllCameraActions()
+    public void HandleAllCameraActions()
     {
         if (playerManager != null)
         {
-            followPlayer();
-            hanndleRotation();
-            handelCollistion();
+            FollowPlayer();
+            HandleRotation();
+            HandleCollisions();
         }
     }
 
-    private void followPlayer()
+    private void FollowPlayer()
     {
-        Vector3 targetCameraPosition = Vector3.SmoothDamp(transform.position, playerManager.transform.position
-            , ref cameraValocity, cameraSmoothSpeed * Time.deltaTime);
+        Vector3 targetCameraPosition = Vector3.SmoothDamp(
+            transform.position,
+            playerManager.transform.position,
+            ref cameraVelocity,
+            cameraSmoothSpeed * Time.deltaTime);
+
         transform.position = targetCameraPosition;
     }
 
-    private void hanndleRotation()
+    private void HandleRotation()
     {
-        //rotate left and right base on horizontal
-        leftAndRightLookAngle += (PlayerInputManager.Instance.cameraInput.x * leftAndRightRotationSpeed) * Time.deltaTime;
-        //rotate up and down base on vertical
-        upAndDownLookAngle -= (PlayerInputManager.Instance.cameraInput.y * upAndDownRotationSpeed) * Time.deltaTime;
-        //clamp up and down look angle between min and max
+        // Xoay trái/phải (yaw)
+        leftAndRightLookAngle += PlayerInputManager.Instance.cameraInput.x * leftAndRightRotationSpeed * Time.deltaTime;
+
+        // Xoay lên/xuống (pitch)
+        upAndDownLookAngle -= PlayerInputManager.Instance.cameraInput.y * upAndDownRotationSpeed * Time.deltaTime;
         upAndDownLookAngle = Mathf.Clamp(upAndDownLookAngle, miniumPivot, maxiumPivot);
 
-        Vector3 cameraRotation = Vector3.zero;
-        Quaternion targetRotation;
-        //rotate this GO left and right
-        cameraRotation.y = leftAndRightLookAngle;
-        targetRotation = Quaternion.Euler(cameraRotation);
-        transform.rotation = targetRotation;
+        // Xoay rig theo yaw
+        transform.rotation = Quaternion.Euler(0, leftAndRightLookAngle, 0);
 
-
-        cameraRotation = Vector3.zero;
-        cameraRotation.x = upAndDownLookAngle;
-        targetRotation = Quaternion.Euler(cameraRotation);
-        cameraPivotTransform.localRotation = targetRotation;
+        // Xoay pivot theo pitch
+        cameraPivotTransform.localRotation = Quaternion.Euler(upAndDownLookAngle, 0, 0);
     }
 
-    private void handelCollistion()
+    private void HandleCollisions()
     {
-        targetCameraPostion = defaultCameraPosition;
+        targetCameraZPosition = defaultCameraZOffset;
+
         RaycastHit hit;
-        Vector3 direction = mainCam.transform.position - cameraPivotTransform.position;
+        Vector3 direction = cameraObject.transform.position - cameraPivotTransform.position;
         direction.Normalize();
-        if (Physics.SphereCast(cameraPivotTransform.position, cameraCollisionOffset, direction, out hit, Mathf.Abs(targetCameraPostion), colliderWithLayer))
+
+        if (Physics.SphereCast(
+            cameraPivotTransform.position,
+            cameraCollisionRadius,
+            direction,
+            out hit,
+            Mathf.Abs(targetCameraZPosition),
+            colliderWithLayer))
         {
-            float distanceFromHitObj = Vector3.Distance(cameraPivotTransform.position, hit.point);
-            targetCameraPostion = - (distanceFromHitObj - cameraCollisionOffset);
+            float distanceFromHitObject = Vector3.Distance(cameraPivotTransform.position, hit.point);
+            targetCameraZPosition = -(distanceFromHitObject - cameraCollisionRadius);
         }
 
-        if (Mathf.Abs(targetCameraPostion) < cameraCollisionOffset)
+        if (Mathf.Abs(targetCameraZPosition) < cameraCollisionRadius)
         {
-            targetCameraPostion = - cameraCollisionOffset;
+            targetCameraZPosition = -cameraCollisionRadius;
         }
 
-        mainCamPos.z = Mathf.Lerp(mainCam.transform.localPosition.z, targetCameraPostion, cameraCollisionOffset);
-        mainCam.transform.localPosition = mainCamPos;
-
+        currentCameraZPosition = Mathf.Lerp(cameraObject.transform.localPosition.z, targetCameraZPosition, 0.2f);
+        cameraPos = cameraObject.transform.localPosition;
+        cameraPos.z = currentCameraZPosition;
+        cameraObject.transform.localPosition = cameraPos;
     }
-
-}//CameraController
-
+}
