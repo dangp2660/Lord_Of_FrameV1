@@ -9,7 +9,10 @@ public class CharacterManager : MonoBehaviour, IUpdatable
     [HideInInspector] public Animator animator;
 
     [Header("Flag")]
-    public bool isPerformingAction = false;
+    [SerializeField] private bool canRotate = true;
+    [SerializeField] private bool canMove = true;
+    [SerializeField] private bool isPerformingAction = false;
+
 
     protected virtual void Awake()
     {
@@ -40,6 +43,13 @@ public class CharacterManager : MonoBehaviour, IUpdatable
     {
 
     }
+
+
+    //get set
+    public bool getCanMove() => canMove;
+    public bool getCanRotate() => canRotate;
+    public bool getIsPerformingAction() => isPerformingAction;
+    public void setIsPerformingAction(bool isPerforming) => isPerformingAction = isPerforming;
 
 
 }

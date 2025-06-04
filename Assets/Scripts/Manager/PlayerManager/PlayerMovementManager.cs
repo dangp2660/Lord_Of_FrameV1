@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovementManager : CharacterMovementManager
 {
@@ -23,16 +23,15 @@ public class PlayerMovementManager : CharacterMovementManager
 
     public void handleAllMovements()
     {
+        if (Player.getIsPerformingAction()) return;
         handleGroundMovement();
         handleRotation();
     }
-
     private void getVerticalHorizontalFromInput()
     {
         verticalMovement = PlayerInputManager.Instance.movementInput.y;
         horizontalMovement = PlayerInputManager.Instance.movementInput.x;
     }
-
     private void handleGroundMovement()
     {
         getVerticalHorizontalFromInput();
@@ -75,22 +74,19 @@ public class PlayerMovementManager : CharacterMovementManager
 
     public void AttempToPerformDodge()
     {
-        //if (Player.isPerformingAction) return;
         
         if(PlayerInputManager.Instance.getMoveAmount() >0)
         {
-            rollDirection = CameraController.instance.cameraObject.transform.forward * PlayerInputManager.Instance.movementInput.y;
-            rollDirection += CameraController.instance.cameraObject.transform.right * PlayerInputManager.Instance.movementInput.x;
+
+            //Tính góc quay trước khi roll
+            rollDirection = CameraController.instance.transform.forward * PlayerInputManager.Instance.movementInput.y;
+            rollDirection += CameraController.instance.transform.right * PlayerInputManager.Instance.movementInput.x;
             rollDirection.y = 0;
             rollDirection.Normalize();
 
-            Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
-            Player.transform.rotation = playerRotation;
-
+            Quaternion playerDirection = Quaternion.LookRotation(rollDirection);
+            Player.transform.rotation = playerDirection;
             Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.RollF, true, true);
-        }
-        else
-        {
 
         }
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterAnimationManager : MonoBehaviour
@@ -20,6 +18,6 @@ public class CharacterAnimationManager : MonoBehaviour
     {
         characterManager.animator.applyRootMotion = applyRotion;
         characterManager.animator.CrossFade(targetAnimation, 0.2f);
-        characterManager.isPerformingAction = isPerformingAction;
+        characterManager.setIsPerformingAction(isPerformingAction);
     }
 }

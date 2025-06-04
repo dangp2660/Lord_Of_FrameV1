@@ -9,7 +9,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     InputSystem inputActions;
     public Vector2 movementInput;
     public Vector2 cameraInput;
-    [SerializeField] public PlayerManager player;
+    public PlayerManager player;
     [SerializeField] private float moveAmount;
 
     [Header("Player Action")]
@@ -97,10 +97,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
                 
     }
 
-    public float getMoveAmount()
-    {
-        return moveAmount;
-    }
+
     
     private void HandleDodgeInput()
     {
@@ -118,5 +115,8 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         }
     }
 
+
+    //Get set
+    public float getMoveAmount() => moveAmount;
 
 }//PlayerInputManager
