@@ -9,8 +9,11 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     InputSystem inputActions;
     public Vector2 movementInput;
     public Vector2 cameraInput;
-    public PlayerManager player;
+    [SerializeField] public PlayerManager player;
     [SerializeField] private float moveAmount;
+
+    [Header("Player Action")]
+    [SerializeField] private bool dodgeInput = false;
     private void Awake()
     {
         if (Instance == null)
@@ -22,6 +25,9 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         {
             Destroy(gameObject);
         }
+    
+        // Find the PlayerManager in the scene
+        player = FindObjectOfType<PlayerManager>();
     }
     private void Start()
     {
@@ -31,7 +37,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
 
     public void OnUpdate()
     {
-        HandleMovementInput();
+        HandleAllInputs();
     }
     private void OnSceneChange(Scene old, Scene newScene)
     {
@@ -53,6 +59,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
 
             inputActions.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             inputActions.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
+            inputActions.PlayerAction.Dodge.performed += i => dodgeInput = true;
         }
 
         inputActions.Enable();
@@ -69,6 +76,11 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         SceneManager.activeSceneChanged -= OnSceneChange;
     }
 
+    private void HandleAllInputs()
+    {
+        HandleMovementInput();
+        HandleDodgeInput();
+    }
     private void HandleMovementInput()
     {
         moveAmount = Mathf.Clamp01(Mathf.Abs(movementInput.y) + Mathf.Abs(movementInput.x));
@@ -84,9 +96,26 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
 
                 
     }
+
     public float getMoveAmount()
     {
         return moveAmount;
+    }
+    
+    private void HandleDodgeInput()
+    {
+        if(dodgeInput)
+        {
+            dodgeInput = false;
+            if (player != null)
+            {
+                player.movementManager.AttempToPerformDodge();
+            }
+            else
+            {
+                Debug.LogError("Player reference is not set in PlayerInputManager");
+            }
+        }
     }
 
 

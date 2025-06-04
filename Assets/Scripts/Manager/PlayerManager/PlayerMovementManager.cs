@@ -13,6 +13,8 @@ public class PlayerMovementManager : CharacterMovementManager
     [SerializeField] private float rotationSpeed = 15f;
     private Vector3 targetRotationDirection;
     private Vector3 moveDirection;
+    [Header("Dodge")]
+    private Vector3 rollDirection;
     protected override void Awake()
     {
         base.Awake();
@@ -69,6 +71,28 @@ public class PlayerMovementManager : CharacterMovementManager
         transform.rotation = targetRotation;
 
         
+    }
+
+    public void AttempToPerformDodge()
+    {
+        //if (Player.isPerformingAction) return;
+        
+        if(PlayerInputManager.Instance.getMoveAmount() >0)
+        {
+            rollDirection = CameraController.instance.cameraObject.transform.forward * PlayerInputManager.Instance.movementInput.y;
+            rollDirection += CameraController.instance.cameraObject.transform.right * PlayerInputManager.Instance.movementInput.x;
+            rollDirection.y = 0;
+            rollDirection.Normalize();
+
+            Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
+            Player.transform.rotation = playerRotation;
+
+            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.RollF, true, true);
+        }
+        else
+        {
+
+        }
     }
 
 }

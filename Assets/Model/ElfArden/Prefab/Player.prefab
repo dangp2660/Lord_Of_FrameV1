@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 7499106018830834651}
   - component: {fileID: 2118056506679562420}
   - component: {fileID: 2504919179712328981}
-  - component: {fileID: 2855540387232661339}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -203,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 2026643042035080094}
   animator: {fileID: 0}
+  isPerformingAction: 0
   movementManager: {fileID: 0}
   animationManager: {fileID: 0}
 --- !u!114 &2504919179712328981
@@ -223,19 +223,6 @@ MonoBehaviour:
   horizontalMovement: 0
   moveAmount: 0
   rotationSpeed: 15
---- !u!114 &2855540387232661339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5316905192914145728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de81a29ba124edb42ba4e58df2e39202, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterManager: {fileID: 0}
 --- !u!1 &8039707599602030045
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,10 @@ public class CharacterManager : MonoBehaviour, IUpdatable
 
     [HideInInspector] public CharacterController characterController;
     [HideInInspector] public Animator animator;
+
+    [Header("Flag")]
+    public bool isPerformingAction = false;
+
     protected virtual void Awake()
     {
         DontDestroyOnLoad(gameObject);
