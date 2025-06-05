@@ -1,13 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimationManager : CharacterAnimationManager, IUpdatable
 {
+    PlayerManager player;
 
     private void Awake()
     {
-
+        player = GetComponent<PlayerManager>();
     }
     private void OnEnable()
     {
@@ -28,6 +29,16 @@ public class PlayerAnimationManager : CharacterAnimationManager, IUpdatable
     {
         updateAnimatorMovementParamaters(0, PlayerInputManager.Instance.getMoveAmount());
         
+    }
+
+    private void OnAnimatorMove()
+    {
+        if (player.applyRootMotion)
+        {
+            Vector3 velocity = player.animator.deltaPosition;
+            player.characterController.Move(velocity);
+            player.transform.rotation *= player.animator.deltaRotation;
+        }
     }
 
 

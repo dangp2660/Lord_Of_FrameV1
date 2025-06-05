@@ -7,9 +7,9 @@ public class PlayerMovementManager : CharacterMovementManager
     [Header("Movement")]
     [SerializeField] private float walkingSpeed = 5;
     [SerializeField] private float runSpeed = 10;
-    [SerializeField] private float verticalMovement;
-    [SerializeField] private float horizontalMovement;
-    [SerializeField] private float moveAmount;
+    private float verticalMovement;
+    private float horizontalMovement;
+    private float moveAmount;
     [SerializeField] private float rotationSpeed = 15f;
     private Vector3 targetRotationDirection;
     private Vector3 moveDirection;
@@ -23,9 +23,9 @@ public class PlayerMovementManager : CharacterMovementManager
 
     public void handleAllMovements()
     {
-        if (Player.getIsPerformingAction()) return;
         handleGroundMovement();
         handleRotation();
+       
     }
     private void getVerticalHorizontalFromInput()
     {
@@ -34,6 +34,10 @@ public class PlayerMovementManager : CharacterMovementManager
     }
     private void handleGroundMovement()
     {
+        //nếu đang trong trạng thái roll thì k thể di chuyển
+
+        if(!Player.getCanMove()) return;
+
         getVerticalHorizontalFromInput();
         //Check on camera facing
         moveDirection = CameraController.instance.transform.forward * verticalMovement;
@@ -54,6 +58,9 @@ public class PlayerMovementManager : CharacterMovementManager
 
     private void handleRotation()
     {
+        // nếu đang trong roll thì k điều chỉnh hướng theo cam
+        if(!Player.getCanMove() ) return;
+
         targetRotationDirection = Vector3.zero;
         targetRotationDirection = CameraController.instance.cameraObject.transform.forward * verticalMovement;
         targetRotationDirection += CameraController.instance.cameraObject.transform.transform.right * horizontalMovement;
@@ -86,8 +93,12 @@ public class PlayerMovementManager : CharacterMovementManager
 
             Quaternion playerDirection = Quaternion.LookRotation(rollDirection);
             Player.transform.rotation = playerDirection;
-            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.RollF, true, true);
+            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.Roll, true, true);
 
+        }
+        else
+        {
+            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.BackStep, true, true);
         }
     }
 

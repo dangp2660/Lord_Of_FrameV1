@@ -14,10 +14,13 @@ public class CharacterAnimationManager : MonoBehaviour
             characterManager.animator.SetFloat(AnimationStringList.Vertical, vertical, 0.1f, Time.deltaTime); 
     }
 
-    public virtual void PlayerTargetActionAnimation(string targetAnimation, bool isPerformingAction, bool applyRotion = true)
+    public virtual void PlayerTargetActionAnimation(string targetAnimation, bool isPerformingAction, 
+        bool applyRotion = true, bool canRotate = false, bool canMove =false)
     {
-        characterManager.animator.applyRootMotion = applyRotion;
+        characterManager.applyRootMotion = applyRotion;
         characterManager.animator.CrossFade(targetAnimation, 0.2f);
         characterManager.setIsPerformingAction(isPerformingAction);
+        characterManager.setCanMove(canMove);
+        characterManager.setCanRotate(canRotate);
     }
 }

@@ -3,7 +3,7 @@
 public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
-
+   
     [Header("References")]
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private Transform cameraPivotTransform; // Xoay lên/xuống

@@ -12,6 +12,10 @@ public class RestartActionFlag : StateMachineBehaviour
         }
         //restart roll 
         character.setIsPerformingAction(false);
+        character.setCanMove(true);
+        character.setCanRotate(true);
+        character.applyRootMotion = false;
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
