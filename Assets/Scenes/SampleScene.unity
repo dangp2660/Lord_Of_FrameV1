@@ -1385,8 +1385,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3391170145077811277, guid: daf4327a2f5a2b34992e8735a3e55452,
         type: 3}
+      propertyPath: m_Height
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3391170145077811277, guid: daf4327a2f5a2b34992e8735a3e55452,
+        type: 3}
       propertyPath: m_Center.y
-      value: 1.2
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4533509590797451671, guid: daf4327a2f5a2b34992e8735a3e55452,
+        type: 3}
+      propertyPath: m_Actions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 2ec1f9b24f0183b46827076e4aee32b5,
+        type: 3}
+    - target: {fileID: 5419110095082113780, guid: daf4327a2f5a2b34992e8735a3e55452,
+        type: 3}
+      propertyPath: jumpHeight
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1948,7 +1964,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1861616323}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2035,6 +2051,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Wall_800x400_2
       objectReference: {fileID: 0}
+    - target: {fileID: 1031305550, guid: abc00000000004629120543463270539, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1031305551, guid: abc00000000004629120543463270539, type: 3}
       propertyPath: m_LocalScale.y
       value: 6.5000005
@@ -2082,6 +2102,35 @@ PrefabInstance:
     - target: {fileID: 1031305551, guid: abc00000000004629120543463270539, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031305554, guid: abc00000000004629120543463270539, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031305558, guid: abc00000000004629120543463270539, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031305562, guid: abc00000000004629120543463270539, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031305566, guid: abc00000000004629120543463270539, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031305570, guid: abc00000000004629120543463270539, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031305574, guid: abc00000000004629120543463270539, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1889878564837084091, guid: abc00000000004629120543463270539,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

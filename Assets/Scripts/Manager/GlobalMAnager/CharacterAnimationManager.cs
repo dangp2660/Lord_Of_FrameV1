@@ -14,6 +14,8 @@ public class CharacterAnimationManager : MonoBehaviour
             characterManager.animator.SetFloat(AnimationStringList.Vertical, vertical, 0.1f, Time.deltaTime); 
     }
 
+    public void updateIsGrounded(bool isGrounded) => characterManager.animator.SetBool(AnimationStringList.isGrounded, isGrounded);
+
     public virtual void PlayerTargetActionAnimation(string targetAnimation, bool isPerformingAction, 
         bool applyRotion = true, bool canRotate = false, bool canMove =false)
     {

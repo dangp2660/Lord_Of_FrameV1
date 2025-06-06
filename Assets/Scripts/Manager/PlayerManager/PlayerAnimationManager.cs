@@ -28,8 +28,11 @@ public class PlayerAnimationManager : CharacterAnimationManager, IUpdatable
     private void updateMove()
     {
         updateAnimatorMovementParamaters(0, PlayerInputManager.Instance.getMoveAmount());
+        updateGround();
         
     }
+    
+    private void updateGround() => updateIsGrounded(player.movementManager.getIsGrounded());
 
     private void OnAnimatorMove()
     {

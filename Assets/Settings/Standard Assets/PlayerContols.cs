@@ -107,6 +107,15 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""6d495da6-6d3d-4b97-b3c6-e9dfb3eca655"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -118,6 +127,17 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e990e9a4-09b8-4864-8cd4-2e3eb7a59809"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -204,6 +224,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         // Player Action
         m_PlayerAction = asset.FindActionMap("Player Action", throwIfNotFound: true);
         m_PlayerAction_Dodge = m_PlayerAction.FindAction("Dodge", throwIfNotFound: true);
+        m_PlayerAction_Jump = m_PlayerAction.FindAction("Jump", throwIfNotFound: true);
         // Player Camera
         m_PlayerCamera = asset.FindActionMap("Player Camera", throwIfNotFound: true);
         m_PlayerCamera_Movement = m_PlayerCamera.FindAction("Movement", throwIfNotFound: true);
@@ -315,11 +336,13 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerAction;
     private List<IPlayerActionActions> m_PlayerActionActionsCallbackInterfaces = new List<IPlayerActionActions>();
     private readonly InputAction m_PlayerAction_Dodge;
+    private readonly InputAction m_PlayerAction_Jump;
     public struct PlayerActionActions
     {
         private @InputSystem m_Wrapper;
         public PlayerActionActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Dodge => m_Wrapper.m_PlayerAction_Dodge;
+        public InputAction @Jump => m_Wrapper.m_PlayerAction_Jump;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -332,6 +355,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IPlayerActionActions instance)
@@ -339,6 +365,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IPlayerActionActions instance)
@@ -409,6 +438,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     public interface IPlayerActionActions
     {
         void OnDodge(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
     public interface IPlayerCameraActions
     {

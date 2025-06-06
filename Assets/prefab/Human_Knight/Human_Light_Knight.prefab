@@ -825,6 +825,14 @@ MonoBehaviour:
   walkingSpeed: 5
   runSpeed: 10
   rotationSpeed: 15
+  gravity: -9.81
+  jumpHeight: 3
+  fallSpeed: -20
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckRadius: 0.2
+  jumpCooldown: 0.5
 --- !u!143 &3391170145077811277
 CharacterController:
   m_ObjectHideFlags: 0

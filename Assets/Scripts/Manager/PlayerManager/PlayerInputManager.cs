@@ -14,6 +14,8 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
 
     [Header("Player Action")]
     [SerializeField] private bool dodgeInput = false;
+    [SerializeField] private bool jumpInput = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -25,10 +27,11 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         {
             Destroy(gameObject);
         }
-    
+
         // Find the PlayerManager in the scene
         player = FindObjectOfType<PlayerManager>();
     }
+
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -39,6 +42,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     {
         HandleAllInputs();
     }
+
     private void OnSceneChange(Scene old, Scene newScene)
     {
         if (newScene.buildIndex == WorldSaveManager.instance.getSceneIndex())
@@ -60,10 +64,12 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
             inputActions.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             inputActions.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
             inputActions.PlayerAction.Dodge.performed += i => dodgeInput = true;
+            inputActions.PlayerAction.Jump.performed += i => jumpInput = true;
+
         }
 
         inputActions.Enable();
-        
+
         // Register with UpdateManager
         UpdateManager.Register(this);
     }
@@ -72,7 +78,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     {
         // Unregister from UpdateManager
         UpdateManager.Unregister(this);
-        
+
         SceneManager.activeSceneChanged -= OnSceneChange;
     }
 
@@ -80,7 +86,9 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     {
         HandleMovementInput();
         HandleDodgeInput();
+        HandleJumpAndFall();
     }
+
     private void HandleMovementInput()
     {
         moveAmount = Mathf.Clamp01(Mathf.Abs(movementInput.y) + Mathf.Abs(movementInput.x));
@@ -94,14 +102,12 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
             moveAmount = 1;
         }
 
-                
+
     }
 
-
-    
     private void HandleDodgeInput()
     {
-        if(dodgeInput)
+        if (dodgeInput)
         {
             dodgeInput = false;
             if (player != null)
@@ -115,7 +121,22 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         }
     }
 
+    private void HandleJumpAndFall()
+    {
+        if (jumpInput) 
+        {
+            jumpInput = false;
+            if (player != null)
+            {
+                player.movementManager.AttempToPerformJump();
+            }
+            else
+            {
+                Debug.LogError("Player reference is not set in PlayerInputManager");
+            }
+        }
 
+    }
     //Get set
     public float getMoveAmount() => moveAmount;
 
