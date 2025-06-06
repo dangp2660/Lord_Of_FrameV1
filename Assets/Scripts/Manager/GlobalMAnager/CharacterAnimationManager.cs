@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterAnimationManager : MonoBehaviour
 {
@@ -16,13 +16,15 @@ public class CharacterAnimationManager : MonoBehaviour
 
     public void updateIsGrounded(bool isGrounded) => characterManager.animator.SetBool(AnimationStringList.isGrounded, isGrounded);
 
-    public virtual void PlayerTargetActionAnimation(string targetAnimation, bool isPerformingAction, 
-        bool applyRotion = true, bool canRotate = false, bool canMove =false)
+    public virtual void PlayerTargetActionAnimation(string targetAnimation, float duration,bool isPerformingAction, 
+        bool applyRotion, bool canRotate = false, bool canMove =false)
     {
         characterManager.applyRootMotion = applyRotion;
-        characterManager.animator.CrossFade(targetAnimation, 0.2f);
+        characterManager.animator.CrossFade(targetAnimation, duration);
         characterManager.setIsPerformingAction(isPerformingAction);
         characterManager.setCanMove(canMove);
         characterManager.setCanRotate(canRotate);
     }
+
+
 }

@@ -41,15 +41,15 @@ public class PlayerMovementManager : CharacterMovementManager
         handleGroundMovement();
         handleRotation();
     }
-    
+
     private void CheckGrounded()
     {
         // Đặt vị trí của hình cầu ở dưới cùng của CharacterController
         Vector3 spherePosition = transform.position + new Vector3(0, -Player.characterController.height / 2 + Player.characterController.radius, 0);
-        
+
         // Kiểm tra xem hình cầu có chồng lấn với bất kỳ thứ gì trên lớp mặt đất không
         isGrounded = Physics.CheckSphere(spherePosition, groundCheckRadius, groundLayer);
-        
+
         // Đặt lại vận tốc theo chiều dọc khi đứng trên mặt đất
         if (isGrounded && verticalVelocity < 0)
         {
@@ -57,7 +57,7 @@ public class PlayerMovementManager : CharacterMovementManager
             isJumping = false;
         }
     }
-    
+
     private void HandleGravity()
     {
         // Áp dụng trọng lực khi không đứng trên mặt đất
@@ -69,12 +69,12 @@ public class PlayerMovementManager : CharacterMovementManager
                 verticalVelocity = fallSpeed;
             }
         }
-        
+
         // Áp dụng chuyển động theo chiều dọc
         Vector3 verticalMove = new Vector3(0, verticalVelocity * Time.deltaTime, 0);
         Player.characterController.Move(verticalMove);
     }
-    
+
     private void getVerticalHorizontalFromInput()
     {
         verticalMovement = PlayerInputManager.Instance.movementInput.y;
@@ -88,18 +88,23 @@ public class PlayerMovementManager : CharacterMovementManager
 
         getVerticalHorizontalFromInput();
         //Check on camera facing
-        moveDirection = CameraController.instance.transform.forward * verticalMovement;
-        moveDirection += CameraController.instance.transform.right * horizontalMovement;
-        moveDirection.Normalize();
-        moveDirection.y = 0;
+        if (isGrounded)
+        {
+            moveDirection = CameraController.instance.transform.forward * verticalMovement;
+            moveDirection += CameraController.instance.transform.right * horizontalMovement;
+            moveDirection.Normalize();
+            moveDirection.y = 0;
+        }
+
+        float currentJump = isGrounded ? 1 : 0.4f;
 
         if (PlayerInputManager.Instance.getMoveAmount() > 0.5f)
         {
-            Player.characterController.Move(moveDirection * runSpeed * Time.deltaTime);
+            Player.characterController.Move(currentJump * moveDirection * runSpeed * Time.deltaTime);
         }
         else if (PlayerInputManager.Instance.getMoveAmount() <= 0.5f)
         {
-            Player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
+            Player.characterController.Move(currentJump * moveDirection * walkingSpeed * Time.deltaTime);
         }
 
     }
@@ -109,11 +114,14 @@ public class PlayerMovementManager : CharacterMovementManager
         // nếu đang trong roll thì k điều chỉnh hướng theo cam
         if (!Player.getCanMove()) return;
 
-        targetRotationDirection = Vector3.zero;
-        targetRotationDirection = CameraController.instance.cameraObject.transform.forward * verticalMovement;
-        targetRotationDirection += CameraController.instance.cameraObject.transform.transform.right * horizontalMovement;
-        targetRotationDirection.Normalize();
-        targetRotationDirection.y = 0;
+        if (isGrounded)
+        {
+            targetRotationDirection = Vector3.zero;
+            targetRotationDirection = CameraController.instance.cameraObject.transform.forward * verticalMovement;
+            targetRotationDirection += CameraController.instance.cameraObject.transform.transform.right * horizontalMovement;
+            targetRotationDirection.Normalize();
+            targetRotationDirection.y = 0;
+        }
 
         if (targetRotationDirection == Vector3.zero)
         {
@@ -141,12 +149,12 @@ public class PlayerMovementManager : CharacterMovementManager
 
             Quaternion playerDirection = Quaternion.LookRotation(rollDirection);
             Player.transform.rotation = playerDirection;
-            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.Roll, true, true);
+            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.Roll, 0.2f, true, true);
 
         }
         else
         {
-            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.BackStep, true, true);
+            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.BackStep, 0.2f, true, true);
         }
     }
 
@@ -155,16 +163,16 @@ public class PlayerMovementManager : CharacterMovementManager
         // Kiểm tra xem có thể nhảy không (đang đứng trên mặt đất và không trong thời gian hồi)
         if (!isGrounded || isJumping || Time.time - lastJumpTime < jumpCooldown)
             return;
-            
+
         // Thiết lập trạng thái nhảy và thời gian hồi
         isJumping = true;
         lastJumpTime = Time.time;
-        
+
         // Tính toán vận tốc nhảy sử dụng công thức vật lý: v = sqrt(2 * g * h)
         verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        
+
         // Phát animation nhảy
-        Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.Jump, true, false);
+        Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.Jump, 0.2f,true, true, true, true);
     }
 
 
