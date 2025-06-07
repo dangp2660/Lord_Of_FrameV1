@@ -8,6 +8,13 @@ public class CharacterManager : MonoBehaviour, IUpdatable
     [HideInInspector] public CharacterController characterController;
     [HideInInspector] public Animator animator;
 
+    [Header("Stats")]
+    [SerializeField] protected CharacterStatsManager stats;
+    [Header("Runtime Stats")]
+    protected int currentVirgo;
+    protected int currentMind;
+    protected int currentEndurance;
+
     [Header("Flag")]
     [SerializeField] private bool canRotate = true;
     [SerializeField] private bool canMove = true;
@@ -24,6 +31,12 @@ public class CharacterManager : MonoBehaviour, IUpdatable
         {
             animator = GetComponentInChildren<Animator>();
         }
+    }
+    protected virtual void Start()
+    {
+        currentVirgo = stats.maxVirgo;
+        currentMind = stats.mind;
+        currentEndurance = stats.endurance;
     }
     private void OnEnable()
     {
@@ -53,8 +66,5 @@ public class CharacterManager : MonoBehaviour, IUpdatable
     public void setCanRotate(bool CanRotate) => canRotate = CanRotate;
     public bool getIsPerformingAction() => isPerformingAction;
     public void setIsPerformingAction(bool isPerforming) => isPerformingAction = isPerforming;
-
-
-
 
 }

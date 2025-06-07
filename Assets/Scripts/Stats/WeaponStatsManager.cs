@@ -3,25 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
-public enum weaponType
-{
-    Dagger, Sword, GreatSword, Bow, CrossBow, Spear, Sheild, 
-}
-
-public enum weaponCategory
-{
-    Melee, Ranged, Magic, Sheild
-}
-
-public enum statScaling
-{
-    None, E, D, C, B, A, S
-}
-
 [CreateAssetMenu(fileName = "New Weapon", menuName = "RPG/Equipment/Weapon")]
-
-public class WeaponStatsManager : MonoBehaviour
+public class WeaponStatsManager : ScriptableObject
 {
     [Header("Basic Information")]
     public string weaponName;
@@ -86,6 +69,20 @@ public class WeaponStatsManager : MonoBehaviour
             default: return 0f;
         }
     }
+}
+public enum weaponType
+{
+    Dagger, Sword, GreatSword, Bow, CrossBow, Spear, Sheild,
+}
+
+public enum weaponCategory
+{
+    Melee, Ranged, Magic, Sheild
+}
+
+public enum statScaling
+{
+    None, E, D, C, B, A, S
 }
 
 [System.Serializable]

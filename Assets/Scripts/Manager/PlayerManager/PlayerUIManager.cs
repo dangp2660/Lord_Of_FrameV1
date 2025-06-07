@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerUIManager : MonoBehaviour
 {
     public static PlayerUIManager instance;
+    [SerializeField] private UIStatBarManager statBar;
     private void Awake()
     {
         if(instance == null)
@@ -22,9 +23,14 @@ public class PlayerUIManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void setMaxBar(int maxVirgo, int maxMind, int maxEndurance)
     {
-        
+        statBar.setMaxValue(maxVirgo, maxMind, maxEndurance);
     }
+
+    public void setCurrentBar(int currentVirgo, int currentMind, int currentEndurance)
+    {
+        statBar.setCurrentValue(currentVirgo, currentMind, currentEndurance);   
+    }
+
 }
