@@ -8,24 +8,25 @@ public class UIStatBar : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private Slider bar;
     [SerializeField] private RectTransform barContainer;
-    [SerializeField] private float widthPerUnit = 2f;
+    private float widthPerUnit = 20f;
 
-    public void setMax(int max)
+    public void setMax()
     {
-        bar.maxValue = max;
+        bar.maxValue = 1;
     }
 
-    public void setCurrent(int current)
+    public void setCurrent(int current, int max)
     {
-        bar.value = current;
+        bar.maxValue = 1f; // Set max to 1 for percentage
+        bar.value = (float)current / max; // Calculate percentage (remove division by index)
     }
 
-    public void updateBarWith(int max)
+    public void updateBarWith(int index)
     {
-        if(barContainer != null)
+        if (barContainer != null)
         {
             Vector2 size = barContainer.sizeDelta;
-            size.x = max * widthPerUnit;
+            size.x = index * widthPerUnit;
             barContainer.sizeDelta = size;
         }
     }

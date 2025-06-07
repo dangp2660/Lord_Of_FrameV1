@@ -5,25 +5,24 @@ using UnityEngine;
 public class UIStatBarManager : MonoBehaviour
 {
     [Header("Bar")]
-    public UIStatBar virgo;
+    public UIStatBar vigor;
     public UIStatBar mind;
     public UIStatBar endurance;
 
-    public void setMaxValue(int maxVirgo, int maxMind, int maxEndurance)
+    public void setMaxValue()
     {
-        virgo?.setMax(maxVirgo);
-        virgo?.updateBarWith(maxVirgo);
-        mind?.setMax(maxMind);
-        mind?.updateBarWith(maxMind);
-        endurance?.setMax(maxEndurance);
-        endurance?.updateBarWith(maxEndurance);
+        vigor?.setMax();
+        mind?.setMax();
+        endurance?.setMax();
 
     }
 
-    public void setCurrentValue(int currentVirgo, int  currentMind, int currentEndurance)
+
+
+    public void updateBarWith(int Vigor, int Mind, int Endurance)
     {
-        virgo?.setCurrent(currentVirgo);
-        mind.setCurrent(currentMind);
-        endurance?.setCurrent(currentEndurance);
+        vigor?.updateBarWith(Vigor);
+        mind?.updateBarWith(Mind);
+        endurance?.updateBarWith(Endurance);
     }
 }

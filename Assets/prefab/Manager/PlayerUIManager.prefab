@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00058145e2f8c054794623c3b2658908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statBar: {fileID: 0}
+  statBar: {fileID: 7229412033221833704}
 --- !u!223 &4566538803024713153
 Canvas:
   m_ObjectHideFlags: 0
@@ -531,7 +531,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.416
+  m_Value: 0.486
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -739,9 +739,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70968f6350249be4faa027ec9ecc684c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virgo: {fileID: 0}
-  mind: {fileID: 0}
-  endurance: {fileID: 0}
+  vigor: {fileID: 3950452758334469593}
+  mind: {fileID: 4827159551180883544}
+  endurance: {fileID: 8989511048659785847}
 --- !u!1 &4796244448468184542
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,7 +940,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.416
+  m_Value: 0.62
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

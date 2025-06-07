@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9146833550351133802}
   - component: {fileID: 5058595977345463468}
+  - component: {fileID: 8832368739183554017}
   m_Layer: 0
   m_Name: WorldSaveManager
   m_TagString: Untagged
@@ -45,3 +46,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldIndex: 1
+--- !u!114 &8832368739183554017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140078897673982187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 568713322cacf2e4a991bc3381dabb35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  csvFileName: character_stats.csv
+  saveOnLevelUp: 1
+  autoSaveInterval: 0
+  saveIntervalSeconds: 60

@@ -804,12 +804,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 0}
   animator: {fileID: 0}
+  stats: {fileID: 11400000, guid: 7c720968b9c0ba545ac6e59c29f84c58, type: 2}
+  currentVigor: 0
+  currentMind: 0
+  currentEndurance: 0
   canRotate: 1
   canMove: 1
   isPerformingAction: 0
   applyRootMotion: 0
   movementManager: {fileID: 0}
   animationManager: {fileID: 0}
+  UIManager: {fileID: 0}
+  restoreEnduranceSpeed: 3
 --- !u!114 &5419110095082113780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -825,9 +831,10 @@ MonoBehaviour:
   walkingSpeed: 5
   runSpeed: 10
   rotationSpeed: 15
+  costDodge: 20
   gravity: -9.81
-  jumpHeight: 3
-  fallSpeed: -20
+  jumpHeight: 1.5
+  fallSpeed: -15
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

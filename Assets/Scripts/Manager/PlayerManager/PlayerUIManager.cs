@@ -1,14 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerUIManager : MonoBehaviour
 {
     public static PlayerUIManager instance;
-    [SerializeField] private UIStatBarManager statBar;
+    public UIStatBarManager statBar;
+
+    [Header("Endurance Restoration")]
+    [SerializeField] private float enduranceRestoreDelay = 2f; // 2 seconds delay
+    [SerializeField] private float enduranceRestoreRate = 0.5f; // How often to restore (every 0.5 seconds)
+    [SerializeField] private int restoreEnduranceSpeed = 3; // Amount to restore per tick
+
+    private float lastEnduranceUseTime;
+    private float lastEnduranceRestoreTime;
+    private PlayerManager playerManager;
+    //Endurance
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -17,20 +25,68 @@ public class PlayerUIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         DontDestroyOnLoad(gameObject);
+        playerManager = FindObjectOfType<PlayerManager>();
     }
 
-    public void setMaxBar(int maxVirgo, int maxMind, int maxEndurance)
+    //endurance
+
+    public void HandleEnduranceRestore()
     {
-        statBar.setMaxValue(maxVirgo, maxMind, maxEndurance);
+
+        if (playerManager == null) return;
+        // Only restore if endurance is not full
+        if (playerManager.currentEndurance < playerManager.GetCharacterStatsManager().maxEndurance)
+        {
+            // Check if 2 seconds have passed since last endurance use
+            if (Time.time - lastEnduranceUseTime >= enduranceRestoreDelay)
+            {
+                // Check if enough time has passed for the next restoration tick
+                if (Time.time - lastEnduranceRestoreTime >= enduranceRestoreRate)
+                {
+                    RestoreEndurance(restoreEnduranceSpeed);
+                    lastEnduranceRestoreTime = Time.time;
+                }
+            }
+        }
     }
 
-    public void setCurrentBar(int currentVirgo, int currentMind, int currentEndurance)
+    public void OnEnduranceUsed()
     {
-        statBar.setCurrentValue(currentVirgo, currentMind, currentEndurance);   
+        lastEnduranceUseTime = Time.time; // Record when endurance was used
     }
 
+    public void RestoreEndurance(int amount)
+    {
+        if (playerManager == null) return;
+
+        playerManager.currentEndurance += amount;
+        // Ensure endurance doesn't exceed maximum
+        if (playerManager.currentEndurance > playerManager.GetCharacterStatsManager().maxEndurance)
+        {
+            playerManager.currentEndurance = playerManager.GetCharacterStatsManager().maxEndurance;
+        }
+
+        // Update UI
+        if (statBar?.endurance != null)
+        {
+            statBar.endurance.setCurrent(playerManager.currentEndurance, playerManager.GetCharacterStatsManager().maxEndurance);
+        }
+    }
+    public void useEndurence(int amount)
+    {
+        lastEnduranceUseTime = Time.time;
+        playerManager.currentEndurance -= amount;
+        if (PlayerUIManager.instance?.statBar?.endurance != null)
+            PlayerUIManager.instance.statBar.endurance.setCurrent(playerManager.currentEndurance, playerManager.GetCharacterStatsManager().maxEndurance);
+    }
+
+    //Max value
+    public void setMaxBar()
+    {
+        statBar.setMaxValue();
+    }
 }

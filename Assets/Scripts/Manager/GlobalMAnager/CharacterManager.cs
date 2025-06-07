@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour, IUpdatable
@@ -11,9 +9,9 @@ public class CharacterManager : MonoBehaviour, IUpdatable
     [Header("Stats")]
     [SerializeField] protected CharacterStatsManager stats;
     [Header("Runtime Stats")]
-    protected int currentVirgo;
-    protected int currentMind;
-    protected int currentEndurance;
+    [HideInInspector] public int currentVigor;
+    [HideInInspector] public int currentMind;
+    [HideInInspector] public int currentEndurance;
 
     [Header("Flag")]
     [SerializeField] private bool canRotate = true;
@@ -27,17 +25,19 @@ public class CharacterManager : MonoBehaviour, IUpdatable
         DontDestroyOnLoad(gameObject);
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        if(animator ==  null)
+        if (animator == null)
         {
             animator = GetComponentInChildren<Animator>();
         }
     }
+
     protected virtual void Start()
     {
-        currentVirgo = stats.maxVirgo;
-        currentMind = stats.mind;
-        currentEndurance = stats.endurance;
+        currentVigor = stats.maxVirgo;
+        currentMind = stats.maxMind;
+        currentEndurance = stats.maxEndurance; // Fixed: was stats.maxVirgo
     }
+
     private void OnEnable()
     {
         UpdateManager.Register(this);
@@ -53,11 +53,24 @@ public class CharacterManager : MonoBehaviour, IUpdatable
 
     }
 
-    protected virtual void LateUpdate()
-    {
+    protected virtual void LateUpdate() { }
 
+    public virtual void takeDame(int amount)
+    {
+        currentVigor -= amount;
+        PlayerUIManager.instance.statBar.vigor.setCurrent(currentVigor, stats.maxVirgo);
+        if (currentVigor < 0)
+        {
+            die();
+        }
     }
 
+    public virtual void UpdateStatUI() { }
+
+    public virtual void die()
+    {
+        Debug.Log($"{gameObject.name}: die");
+    }
 
     //get set
     public bool getCanMove() => canMove;
@@ -66,5 +79,6 @@ public class CharacterManager : MonoBehaviour, IUpdatable
     public void setCanRotate(bool CanRotate) => canRotate = CanRotate;
     public bool getIsPerformingAction() => isPerformingAction;
     public void setIsPerformingAction(bool isPerforming) => isPerformingAction = isPerforming;
+    public CharacterStatsManager GetCharacterStatsManager() => stats;
 
 }

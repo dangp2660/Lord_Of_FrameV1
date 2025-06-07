@@ -15,7 +15,9 @@ public class PlayerMovementManager : CharacterMovementManager
     private Vector3 targetRotationDirection;
     private Vector3 moveDirection;
     [Header("Dodge")]
+    [SerializeField] private int costDodge = 5;
     private Vector3 rollDirection;
+
     [Header("Jump and Fall")]
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float jumpHeight = 3f;
@@ -137,10 +139,14 @@ public class PlayerMovementManager : CharacterMovementManager
 
     public void AttempToPerformDodge()
     {
+        if (Player.getIsPerformingAction()) return;
+        if(Player.currentEndurance < costDodge) { return;}
 
+        Player.UIManager.useEndurence(costDodge);
+        Debug.Log(Player.currentEndurance);
         if (PlayerInputManager.Instance.getMoveAmount() > 0)
         {
-
+            
             //Tính góc quay trước khi roll
             rollDirection = CameraController.instance.transform.forward * PlayerInputManager.Instance.movementInput.y;
             rollDirection += CameraController.instance.transform.right * PlayerInputManager.Instance.movementInput.x;
