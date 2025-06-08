@@ -30,6 +30,30 @@ public class PlayerUIManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         playerManager = FindObjectOfType<PlayerManager>();
+        
+        // Add null check
+        if (playerManager == null)
+        {
+            Debug.LogWarning("PlayerManager not found in scene. UI will not function properly.");
+        }
+        
+        // Register for scene change events to refresh references
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        // Refresh player reference when new scene loads
+        if (playerManager == null)
+        {
+            playerManager = FindObjectOfType<PlayerManager>();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Unregister from scene events
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     //endurance

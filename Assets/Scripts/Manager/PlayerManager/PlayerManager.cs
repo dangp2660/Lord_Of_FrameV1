@@ -5,6 +5,7 @@ public class PlayerManager : CharacterManager
     [HideInInspector] public PlayerMovementManager movementManager;
     [HideInInspector] public PlayerAnimationManager animationManager;
     [HideInInspector] public PlayerUIManager UIManager;
+    [HideInInspector] public PlayerInventoryManager inventoryManager;
     
     // Remove the endurance restoration variables - they're now in PlayerUIManager
     // [SerializeField] protected int restoreEnduranceSpeed = 3; // Remove this
@@ -32,6 +33,7 @@ public class PlayerManager : CharacterManager
         UIManager = GameObject.FindGameObjectWithTag(TagStringList.PlayerUI).GetComponent<PlayerUIManager>();
         movementManager = GetComponent<PlayerMovementManager>();
         animationManager = GetComponent<PlayerAnimationManager>();
+        inventoryManager = GetComponent<PlayerInventoryManager>();
     }
 
     public override void OnUpdate()

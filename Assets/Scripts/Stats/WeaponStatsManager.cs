@@ -11,6 +11,7 @@ public class WeaponStatsManager : ScriptableObject
     public string description;
     public Sprite icon;
     public GameObject prefabs;
+    public int enduranceCost;
 
     [Header("Weapon Type")]
     public weaponType type;

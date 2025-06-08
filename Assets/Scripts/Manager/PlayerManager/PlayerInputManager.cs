@@ -26,10 +26,35 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         else
         {
             Destroy(gameObject);
+            return; // Add this to prevent further execution
         }
 
         // Find the PlayerManager in the scene
         player = FindObjectOfType<PlayerManager>();
+        
+        // Add null check and warning
+        if (player == null)
+        {
+            Debug.LogWarning("PlayerManager not found in scene. PlayerInputManager will not function properly.");
+        }
+    }
+
+    // Add method to refresh player reference when scene changes
+    private void OnSceneChange(Scene old, Scene newScene)
+    {
+        if (newScene.buildIndex == WorldSaveManager.instance.getSceneIndex())
+        {
+            Instance.enabled = true;
+            // Refresh player reference for new scene
+            if (player == null)
+            {
+                player = FindObjectOfType<PlayerManager>();
+            }
+        }
+        else
+        {
+            Instance.enabled = false;
+        }
     }
 
     private void Start()
@@ -41,18 +66,6 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     public void OnUpdate()
     {
         HandleAllInputs();
-    }
-
-    private void OnSceneChange(Scene old, Scene newScene)
-    {
-        if (newScene.buildIndex == WorldSaveManager.instance.getSceneIndex())
-        {
-            Instance.enabled = true;
-        }
-        else
-        {
-            Instance.enabled = false;
-        }
     }
 
     private void OnEnable()

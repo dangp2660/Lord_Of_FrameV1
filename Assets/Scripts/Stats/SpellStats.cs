@@ -8,6 +8,7 @@ public class SpellStats : ScriptableObject
     public string description;
     public Sprite icon;
     public GameObject spellEffect;
+    public int mindCost;
     
     [Header("Spell Type")]
     public SpellType spellType;
