@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f30666ecfe54ff94989a26504a685a15, type: 3}
-  m_Name: Dandit_Sword
+  m_Name: Bandit_Knife
   m_EditorClassIdentifier: 
   weaponName: Bandit_Knife
   description: This is the sword use by bandit
   icon: {fileID: 21300000, guid: 2775046a054990b41b4201109289b1c5, type: 3}
   prefabs: {fileID: 9032134025126540726, guid: 41865b58cb5ae334d8bb27fec431d947, type: 3}
-  enduranceCost: 5
+  enduranceCost: 0
   type: 1
   category: 0
   physicalDame: 15

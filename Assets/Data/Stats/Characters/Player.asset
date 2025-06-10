@@ -15,13 +15,13 @@ MonoBehaviour:
   level: 1
   souls: 0
   soulsLevel: 1
-  vigor: 10
+  vigor: 15
   mind: 5
   endurance: 15
   strength: 10
   dexterity: 10
   intelligence: 10
-  maxVirgo: 550
+  maxVirgo: 850
   maxMind: 132
   maxEndurance: 205
   physicalDefense: 12

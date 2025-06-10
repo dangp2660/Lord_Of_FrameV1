@@ -1,0 +1,2 @@
+Name,Description,Type,Category,PhysicalDamage,MagicDamage,StrengthScaling,DexterityScaling,IntelligenceScaling,StrengthReq,DexterityReq,IntelligenceReq,Weight,CriticalRate,Range,CanBeUpgraded
+Bandit_Knife,This is the sword use by bandit,Sword,Melee,15,0,D,C,E,5,2,0,0,100,0,True

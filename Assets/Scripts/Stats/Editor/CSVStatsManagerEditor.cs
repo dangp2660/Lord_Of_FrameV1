@@ -65,6 +65,41 @@ public class CSVStatsManagerEditor : EditorWindow
         
         EditorGUILayout.Space();
         
+        // Import buttons
+        GUILayout.Label("Import Options", EditorStyles.boldLabel);
+        
+        if (GUILayout.Button("Import Character Stats from CSV"))
+        {
+            ImportCharacterStatsFromCSV();
+        }
+        
+        if (GUILayout.Button("Import Weapon Stats from CSV"))
+        {
+            ImportWeaponStatsFromCSV();
+        }
+        
+        if (GUILayout.Button("Import Armor Stats from CSV"))
+        {
+            ImportArmorStatsFromCSV();
+        }
+        
+        if (GUILayout.Button("Import Item Stats from CSV"))
+        {
+            ImportItemStatsFromCSV();
+        }
+        
+        if (GUILayout.Button("Import Spell Stats from CSV"))
+        {
+            ImportSpellStatsFromCSV();
+        }
+        
+        if (GUILayout.Button("Import All CSVs in Folder"))
+        {
+            ImportAllCSVsInFolder();
+        }
+        
+        EditorGUILayout.Space();
+        
         // Utility buttons
         GUILayout.Label("Utilities", EditorStyles.boldLabel);
         
@@ -250,5 +285,382 @@ public class CSVStatsManagerEditor : EditorWindow
     private string GetSpellStatsData(SpellStats spell)
     {
         return $"{spell.spellName},{spell.description},{spell.spellType},{spell.intelligenceRequirement},{spell.fpCost},{spell.staminaCost},{spell.baseDamage},{spell.damageType},{spell.intelligenceScaling},{spell.castTime},{spell.range},{spell.duration},{spell.maxUses}";
+    }
+
+    private void ImportCharacterStatsFromCSV()
+    {
+        string path = EditorUtility.OpenFilePanel("Import Character Stats CSV", exportPath, "csv");
+        if (string.IsNullOrEmpty(path)) return;
+        string[] lines = File.ReadAllLines(path);
+        if (lines.Length < 2) { EditorUtility.DisplayDialog("Import Failed", "CSV file is empty or missing data.", "OK"); return; }
+        string assetFolder = "Assets/Data/Stats/Characters/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        int imported = 0;
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 15) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            CharacterStatsManager asset = AssetDatabase.LoadAssetAtPath<CharacterStatsManager>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<CharacterStatsManager>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.name = assetName;
+            int.TryParse(values[1], out asset.level);
+            int.TryParse(values[2], out asset.souls);
+            int.TryParse(values[3], out asset.soulsLevel);
+            int.TryParse(values[4], out asset.vigor);
+            int.TryParse(values[5], out asset.mind);
+            int.TryParse(values[6], out asset.endurance);
+            int.TryParse(values[7], out asset.strength);
+            int.TryParse(values[8], out asset.dexterity);
+            int.TryParse(values[9], out asset.intelligence);
+            int.TryParse(values[10], out asset.maxVirgo);
+            int.TryParse(values[11], out asset.maxMind);
+            int.TryParse(values[12], out asset.maxEndurance);
+            int.TryParse(values[13], out asset.physicalDefense);
+            int.TryParse(values[14], out asset.magicDefense);
+            EditorUtility.SetDirty(asset);
+            imported++;
+        }
+        AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("Import Complete", $"Imported {imported} Character Stats assets.", "OK");
+    }
+
+    private void ImportWeaponStatsFromCSV()
+    {
+        string path = EditorUtility.OpenFilePanel("Import Weapon Stats CSV", exportPath, "csv");
+        if (string.IsNullOrEmpty(path)) return;
+        string[] lines = File.ReadAllLines(path);
+        if (lines.Length < 2) { EditorUtility.DisplayDialog("Import Failed", "CSV file is empty or missing data.", "OK"); return; }
+        string assetFolder = "Assets/Data/Stats/Weapons/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        int imported = 0;
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 15) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            WeaponStatsManager asset = AssetDatabase.LoadAssetAtPath<WeaponStatsManager>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<WeaponStatsManager>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.weaponName = values[0];
+            asset.description = values[1];
+            System.Enum.TryParse(values[2], out asset.type);
+            System.Enum.TryParse(values[3], out asset.category);
+            int.TryParse(values[4], out asset.physicalDame);
+            int.TryParse(values[5], out asset.magicDame);
+            System.Enum.TryParse(values[6], out asset.strengthScaling);
+            System.Enum.TryParse(values[7], out asset.dexterityScaling);
+            System.Enum.TryParse(values[8], out asset.intelligenceScaling);
+            int.TryParse(values[9], out asset.strengthRequirement);
+            int.TryParse(values[10], out asset.dexterityRequirement);
+            int.TryParse(values[11], out asset.intelligenceRequirement);
+            float.TryParse(values[12], out asset.weight);
+            float.TryParse(values[13], out asset.criticalRate);
+            int.TryParse(values[14], out asset.range);
+            bool.TryParse(values.Length > 15 ? values[15] : "true", out asset.canBeUpgraded);
+            EditorUtility.SetDirty(asset);
+            imported++;
+        }
+        AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("Import Complete", $"Imported {imported} Weapon Stats assets.", "OK");
+    }
+
+    private void ImportArmorStatsFromCSV()  
+    {
+        string path = EditorUtility.OpenFilePanel("Import Armor Stats CSV", exportPath, "csv");
+        if (string.IsNullOrEmpty(path)) return;
+        string[] lines = File.ReadAllLines(path);
+        if (lines.Length < 2) { EditorUtility.DisplayDialog("Import Failed", "CSV file is empty or missing data.", "OK"); return; }
+        string assetFolder = "Assets/Data/Stats/Armors/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        int imported = 0;
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 8) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            ArmorStatsManager asset = AssetDatabase.LoadAssetAtPath<ArmorStatsManager>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<ArmorStatsManager>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.armorName = values[0];
+            asset.description = values[1];
+            System.Enum.TryParse(values[2], out asset.armorSlot);
+            System.Enum.TryParse(values[3], out asset.armorType);
+            float.TryParse(values[4], out asset.physicalDefense);
+            float.TryParse(values[5], out asset.magicDefense);
+            float.TryParse(values[6], out asset.weight);
+            int.TryParse(values[7], out asset.poise);
+            EditorUtility.SetDirty(asset);
+            imported++;
+        }
+        AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("Import Complete", $"Imported {imported} Armor Stats assets.", "OK");
+    }
+
+    private void ImportItemStatsFromCSV()
+    {
+        string path = EditorUtility.OpenFilePanel("Import Item Stats CSV", exportPath, "csv");
+        if (string.IsNullOrEmpty(path)) return;
+        string[] lines = File.ReadAllLines(path);
+        if (lines.Length < 2) { EditorUtility.DisplayDialog("Import Failed", "CSV file is empty or missing data.", "OK"); return; }
+        string assetFolder = "Assets/Data/Stats/Items/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        int imported = 0;
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 8) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            ItemStats asset = AssetDatabase.LoadAssetAtPath<ItemStats>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<ItemStats>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.itemName = values[0];
+            asset.description = values[1];
+            System.Enum.TryParse(values[2], out asset.itemType);
+            System.Enum.TryParse(values[3], out asset.rarity);
+            int.TryParse(values[4], out asset.maxStackSize);
+            bool.TryParse(values[5], out asset.isConsumable);
+            bool.TryParse(values[6], out asset.isKeyItem);
+            bool.TryParse(values[7], out asset.canBeCrafted);
+            EditorUtility.SetDirty(asset);
+            imported++;
+        }
+        AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("Import Complete", $"Imported {imported} Item Stats assets.", "OK");
+    }
+
+    private void ImportSpellStatsFromCSV()
+    {
+        string path = EditorUtility.OpenFilePanel("Import Spell Stats CSV", exportPath, "csv");
+        if (string.IsNullOrEmpty(path)) return;
+        string[] lines = File.ReadAllLines(path);
+        if (lines.Length < 2) { EditorUtility.DisplayDialog("Import Failed", "CSV file is empty or missing data.", "OK"); return; }
+        string assetFolder = "Assets/Data/Stats/Spells/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        int imported = 0;
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 13) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            SpellStats asset = AssetDatabase.LoadAssetAtPath<SpellStats>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<SpellStats>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.spellName = values[0];
+            asset.description = values[1];
+            System.Enum.TryParse(values[2], out asset.spellType);
+            int.TryParse(values[3], out asset.intelligenceRequirement);
+            int.TryParse(values[4], out asset.fpCost);
+            int.TryParse(values[5], out asset.staminaCost);
+            int.TryParse(values[6], out asset.baseDamage);
+            System.Enum.TryParse(values[7], out asset.damageType);
+            System.Enum.TryParse(values[8], out asset.intelligenceScaling);
+            float.TryParse(values[9], out asset.castTime);
+            float.TryParse(values[10], out asset.range);
+            float.TryParse(values[11], out asset.duration);
+            int.TryParse(values[12], out asset.maxUses);
+            EditorUtility.SetDirty(asset);
+            imported++;
+        }
+        AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("Import Complete", $"Imported {imported} Spell Stats assets.", "OK");
+    }
+
+    private void ImportAllCSVsInFolder()
+    {
+        string folderPath = EditorUtility.OpenFolderPanel("Select Folder with CSVs", exportPath, "");
+        if (string.IsNullOrEmpty(folderPath)) return;
+
+        string[] csvFiles = Directory.GetFiles(folderPath, "*.csv");
+        int totalImported = 0;
+        foreach (string file in csvFiles)
+        {
+            string fileName = Path.GetFileName(file).ToLower();
+            if (fileName == "characterstats.csv")
+            {
+                ImportCharacterStatsFromCSV(file);
+                totalImported++;
+            }
+            else if (fileName == "weaponstats.csv")
+            {
+                ImportWeaponStatsFromCSV(file);
+                totalImported++;
+            }
+            else if (fileName == "armorstats.csv")
+            {
+                ImportArmorStatsFromCSV(file);
+                totalImported++;
+            }
+            else if (fileName == "itemstats.csv")
+            {
+                ImportItemStatsFromCSV(file);
+                totalImported++;
+            }
+            else if (fileName == "spellstats.csv")
+            {
+                ImportSpellStatsFromCSV(file);
+                totalImported++;
+            }
+        }
+        AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("Import Complete", $"Imported {totalImported} CSV files.", "OK");
+    }
+
+    // Overloads for direct file import
+    private void ImportCharacterStatsFromCSV(string filePath)
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        if (lines.Length < 2) return;
+        string assetFolder = "Assets/Data/Stats/Characters/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 15) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            CharacterStatsManager asset = AssetDatabase.LoadAssetAtPath<CharacterStatsManager>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<CharacterStatsManager>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.name = assetName;
+            int.TryParse(values[1], out asset.level);
+            int.TryParse(values[2], out asset.souls);
+            int.TryParse(values[3], out asset.soulsLevel);
+            int.TryParse(values[4], out asset.vigor);
+            int.TryParse(values[5], out asset.mind);
+            int.TryParse(values[6], out asset.endurance);
+            int.TryParse(values[7], out asset.strength);
+            int.TryParse(values[8], out asset.dexterity);
+            int.TryParse(values[9], out asset.intelligence);
+            int.TryParse(values[10], out asset.maxVirgo);
+            int.TryParse(values[11], out asset.maxMind);
+            int.TryParse(values[12], out asset.maxEndurance);
+            int.TryParse(values[13], out asset.physicalDefense);
+            int.TryParse(values[14], out asset.magicDefense);
+            EditorUtility.SetDirty(asset);
+        }
+    }
+    private void ImportWeaponStatsFromCSV(string filePath)
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        if (lines.Length < 2) return;
+        string assetFolder = "Assets/Data/Stats/Weapons/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 15) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            WeaponStatsManager asset = AssetDatabase.LoadAssetAtPath<WeaponStatsManager>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<WeaponStatsManager>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.weaponName = values[0];
+            asset.description = values[1];
+            System.Enum.TryParse(values[2], out asset.type);
+            System.Enum.TryParse(values[3], out asset.category);
+            int.TryParse(values[4], out asset.physicalDame);
+            int.TryParse(values[5], out asset.magicDame);
+            System.Enum.TryParse(values[6], out asset.strengthScaling);
+            System.Enum.TryParse(values[7], out asset.dexterityScaling);
+            System.Enum.TryParse(values[8], out asset.intelligenceScaling);
+            int.TryParse(values[9], out asset.strengthRequirement);
+            int.TryParse(values[10], out asset.dexterityRequirement);
+            int.TryParse(values[11], out asset.intelligenceRequirement);
+            float.TryParse(values[12], out asset.weight);
+            float.TryParse(values[13], out asset.criticalRate);
+            int.TryParse(values[14], out asset.range);
+            bool.TryParse(values.Length > 15 ? values[15] : "true", out asset.canBeUpgraded);
+            EditorUtility.SetDirty(asset);
+        }
+    }
+    private void ImportArmorStatsFromCSV(string filePath)
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        if (lines.Length < 2) return;
+        string assetFolder = "Assets/Data/Stats/Armors/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 8) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            ArmorStatsManager asset = AssetDatabase.LoadAssetAtPath<ArmorStatsManager>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<ArmorStatsManager>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.armorName = values[0];
+            asset.description = values[1];
+            System.Enum.TryParse(values[2], out asset.armorSlot);
+            System.Enum.TryParse(values[3], out asset.armorType);
+            float.TryParse(values[4], out asset.physicalDefense);
+            float.TryParse(values[5], out asset.magicDefense);
+            float.TryParse(values[6], out asset.weight);
+            int.TryParse(values[7], out asset.poise);
+            EditorUtility.SetDirty(asset);
+        }
+    }
+    private void ImportItemStatsFromCSV(string filePath)
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        if (lines.Length < 2) return;
+        string assetFolder = "Assets/Data/Stats/Items/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 8) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            ItemStats asset = AssetDatabase.LoadAssetAtPath<ItemStats>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<ItemStats>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.itemName = values[0];
+            asset.description = values[1];
+            System.Enum.TryParse(values[2], out asset.itemType);
+            System.Enum.TryParse(values[3], out asset.rarity);
+            int.TryParse(values[4], out asset.maxStackSize);
+            bool.TryParse(values[5], out asset.isConsumable);
+            bool.TryParse(values[6], out asset.isKeyItem);
+            bool.TryParse(values[7], out asset.canBeCrafted);
+            EditorUtility.SetDirty(asset);
+        }
+    }
+    private void ImportSpellStatsFromCSV(string filePath)
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        if (lines.Length < 2) return;
+        string assetFolder = "Assets/Data/Stats/Spells/";
+        if (!Directory.Exists(assetFolder)) Directory.CreateDirectory(assetFolder);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            string[] values = lines[i].Split(',');
+            if (values.Length < 13) continue;
+            string assetName = values[0];
+            string assetPath = assetFolder + assetName + ".asset";
+            SpellStats asset = AssetDatabase.LoadAssetAtPath<SpellStats>(assetPath);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<SpellStats>(); AssetDatabase.CreateAsset(asset, assetPath); }
+            asset.spellName = values[0];
+            asset.description = values[1];
+            System.Enum.TryParse(values[2], out asset.spellType);
+            int.TryParse(values[3], out asset.intelligenceRequirement);
+            int.TryParse(values[4], out asset.fpCost);
+            int.TryParse(values[5], out asset.staminaCost);
+            int.TryParse(values[6], out asset.baseDamage);
+            System.Enum.TryParse(values[7], out asset.damageType);
+            System.Enum.TryParse(values[8], out asset.intelligenceScaling);
+            float.TryParse(values[9], out asset.castTime);
+            float.TryParse(values[10], out asset.range);
+            float.TryParse(values[11], out asset.duration);
+            int.TryParse(values[12], out asset.maxUses);
+            EditorUtility.SetDirty(asset);
+        }
     }
 }

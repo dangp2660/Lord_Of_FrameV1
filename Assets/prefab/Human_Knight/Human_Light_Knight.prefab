@@ -806,7 +806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 0}
   animator: {fileID: 0}
-  stats: {fileID: 11400000, guid: 7c720968b9c0ba545ac6e59c29f84c58, type: 2}
+  stats: {fileID: 11400000, guid: 6903682cc2dac0842bd97adbccaaf742, type: 2}
   currentVigor: 0
   currentMind: 0
   currentEndurance: 0

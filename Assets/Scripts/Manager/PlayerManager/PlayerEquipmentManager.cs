@@ -70,6 +70,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             
             RightHandWeapon = Instantiate(player.inventoryManager.currentRightWeapon.prefabs);
             rightHandSlot.LoadWeapon(RightHandWeapon);
+            player.UIManager.setRightQuickSlot(player.inventoryManager.currentRightWeapon);
+
         }
     }
     public void LoadLeftWeapon()

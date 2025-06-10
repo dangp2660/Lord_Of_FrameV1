@@ -6,11 +6,7 @@ public class PlayerManager : CharacterManager
     [HideInInspector] public PlayerAnimationManager animationManager;
     [HideInInspector] public PlayerUIManager UIManager;
     [HideInInspector] public PlayerInventoryManager inventoryManager;
-    
-    // Remove the endurance restoration variables - they're now in PlayerUIManager
-    // [SerializeField] protected int restoreEnduranceSpeed = 3; // Remove this
-
-
+  
     protected override void Start()
     {
         base.Start();

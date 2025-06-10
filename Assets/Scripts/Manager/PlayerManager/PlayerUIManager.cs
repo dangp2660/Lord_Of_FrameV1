@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -9,6 +10,20 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] private float enduranceRestoreDelay = 2f; // 2 seconds delay
     [SerializeField] private float enduranceRestoreRate = 0.5f; // How often to restore (every 0.5 seconds)
     [SerializeField] private int restoreEnduranceSpeed = 3; // Amount to restore per tick
+
+    [Header("Quick Slot")]
+    [SerializeField] private Image rightWeapon;
+    [SerializeField] private Image leftWeapon;
+    [SerializeField] private Image item;
+    [SerializeField] private Image spell;
+    //data
+    [Header("Quick Slot Data")]
+    public WeaponStatsManager currentRightWeapon;
+    public WeaponStatsManager currentLeftWeapon;
+    public ItemStats currentItem;
+    public SpellStats currentSpell;
+    [SerializeField] private int currentItemQuantity = 0;
+    [SerializeField] private Text itemQuantityText;
 
     private float lastEnduranceUseTime;
     private float lastEnduranceRestoreTime;
@@ -113,4 +128,126 @@ public class PlayerUIManager : MonoBehaviour
     {
         statBar.setMaxValue();
     }
+
+    //Quick Slot
+
+    public void setRightQuickSlot(WeaponStatsManager weapon)
+    {
+        currentRightWeapon = weapon;
+        if (playerManager != null && playerManager.inventoryManager != null)
+        {
+            playerManager.inventoryManager.currentRightWeapon = weapon;
+        }
+        updateQuickSlotUI();
+    }
+    
+    public void setLeftQuickSlot(WeaponStatsManager weapon)
+    {
+        currentLeftWeapon = weapon;
+        if (playerManager != null && playerManager.inventoryManager != null)
+        {
+            playerManager.inventoryManager.currentLeftWeapon = weapon;
+        }
+        updateQuickSlotUI();
+    }
+
+    public void SetItemSlot(ItemStats itemStats, int quantity = 1)
+    {
+        currentItem = itemStats;
+        currentItemQuantity = quantity;
+        updateQuickSlotUI();
+    }
+
+    public void setSpellSlot(SpellStats spell)
+    {
+        currentSpell = spell;
+        updateQuickSlotUI();
+    }
+
+    //update Ui 
+    public void updateQuickSlotUI()
+    {
+        //set icon right weapons
+        if (rightWeapon != null)
+        {
+            if(currentRightWeapon != null && currentRightWeapon.icon != null)
+            {
+                rightWeapon.enabled = true;
+                rightWeapon.sprite = currentRightWeapon.icon;
+                rightWeapon.color = Color.white;
+            }
+            else
+            {
+                rightWeapon.enabled = false;
+                rightWeapon.sprite = null;
+                rightWeapon.color = Color.clear;
+            }
+        }
+        
+        //set icon left weapon
+        if (leftWeapon != null)
+        {
+            if(currentLeftWeapon != null && currentLeftWeapon.icon != null)
+            {
+                leftWeapon.enabled = true;
+                leftWeapon.sprite = currentLeftWeapon.icon;
+                leftWeapon.color = Color.white;
+            }
+            else
+            {
+                leftWeapon.enabled = false;
+                leftWeapon.sprite = null;
+                leftWeapon.color = Color.clear;
+            }
+        }
+        
+        //set icon spell
+        if (spell != null)
+        {
+            if (currentSpell != null && currentSpell.icon != null)
+            {
+                spell.enabled = true;
+                spell.sprite = currentSpell.icon;
+                spell.color = Color.white;
+            }
+            else
+            {
+                spell.enabled = false;
+                spell.sprite = null;
+                spell.color = Color.clear;
+            }
+        }
+        
+        //set icon item
+        if (item != null)
+        {
+            if (currentItem != null && currentItem.icon != null)
+            {
+                item.enabled = true;
+                item.sprite = currentItem.icon;
+                item.color = Color.white;
+            }
+            else
+            {
+                item.enabled = false;
+                item.sprite = null;
+                item.color = Color.clear;
+            }
+        }
+        
+        // Update item quantity text
+        if (itemQuantityText != null)
+        {
+            if (currentItem != null && currentItemQuantity > 0)
+            {
+                itemQuantityText.text = currentItemQuantity.ToString();
+                itemQuantityText.gameObject.SetActive(true);
+            }
+            else
+            {
+                itemQuantityText.gameObject.SetActive(false);
+            }
+        }
+    }
+
 }
