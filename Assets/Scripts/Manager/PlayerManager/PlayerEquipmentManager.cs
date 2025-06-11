@@ -90,9 +90,35 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         player.inventoryManager.currentRightWeapon = selectedWeapon;
         LoadRightWeapon(); 
     }
+    public void switchLeftWeapon()
+    {
+        player.animationManager.PlayerTargetActionAnimation(AnimationStringList.SwitchLeftWeapon, 0.2f, false, true);
+        //unload current weapon 
+        if(LeftHandWeapon != null)
+        {
+            leftHandSlot.UnLoadWeapon();
+        }
+        //cycle weapon index 
+        player.inventoryManager.leftWeaponIndex += 1;
+        if (player.inventoryManager.leftWeaponIndex < 0 || 
+            player.inventoryManager.leftWeaponIndex >= player.inventoryManager.leftWeaponList.Length)
+        {
+            player.inventoryManager.leftWeaponIndex = 0;
+        }
+        if (player.inventoryManager.currentLeftWeapon == null)
+        {
+            player.inventoryManager.leftWeaponIndex = 0;
+        }
+        
+        WeaponStatsManager selectedWeapon = player.inventoryManager.leftWeaponList[player.inventoryManager.leftWeaponIndex];
+        //upload new weapon 
+        player.inventoryManager.currentLeftWeapon = selectedWeapon;
+        LoadLeftWeapon();
+    }
+
     public void LoadLeftWeapon()
     {
-        // Add null checks for player and inventoryManager
+        // Add null checks for player and inventoryManager 
         if (player == null || player.inventoryManager == null)
         {
             Debug.LogWarning("Player or InventoryManager is null in PlayerEquipmentManager");
@@ -101,7 +127,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         
         if (player.inventoryManager.currentLeftWeapon != null)
         {
-            // Add null check for leftHandSlot
+            // Add null check for leftHandSlot 
             if (leftHandSlot == null)
             {
                 Debug.LogError("Left hand slot is not assigned in PlayerEquipmentManager");
@@ -110,6 +136,11 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             
             LeftHandWeapon = Instantiate(player.inventoryManager.currentLeftWeapon.prefabs);
             leftHandSlot.LoadWeapon(LeftHandWeapon);
+            player.UIManager.setLeftQuickSlot(player.inventoryManager.currentLeftWeapon);
+        }
+        else
+        {
+            player.UIManager.setLeftQuickSlot(null);
         }
     }
 

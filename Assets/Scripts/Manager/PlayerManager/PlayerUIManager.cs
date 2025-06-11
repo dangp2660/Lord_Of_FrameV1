@@ -179,7 +179,7 @@ public class PlayerUIManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Delete image");
+                //Debug.Log("Delete image");
                 rightWeapon.sprite = null;
                 rightWeapon.enabled = false;
                 rightWeapon.color = Color.clear;

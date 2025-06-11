@@ -16,6 +16,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     [SerializeField] private bool dodgeInput = false;
     [SerializeField] private bool jumpInput = false;
     [SerializeField] private bool switchRightWeapon = false;
+    [SerializeField] private bool switchLeftWeapon = false;
 
     private void Awake()
     {
@@ -80,6 +81,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
             inputActions.PlayerAction.Dodge.performed += i => dodgeInput = true;
             inputActions.PlayerAction.Jump.performed += i => jumpInput = true;
             inputActions.PlayerAction.SwitchRightWeapon.performed += inputActions => switchRightWeapon = true;
+            inputActions.PlayerAction.SwitchLeftWeapon.performed += inputActions => switchLeftWeapon = true;
 
         }
 
@@ -164,6 +166,15 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
             {
                 player.equipmentManager.switchRightWeapon();
             } 
+        }
+
+        if(switchLeftWeapon)
+        {
+            switchLeftWeapon = false;
+            if( player != null )
+            {
+                player.equipmentManager.switchLeftWeapon();
+            }
         }
     }
     //Get set
