@@ -6,6 +6,7 @@ public class PlayerManager : CharacterManager
     [HideInInspector] public PlayerAnimationManager animationManager;
     [HideInInspector] public PlayerUIManager UIManager;
     [HideInInspector] public PlayerInventoryManager inventoryManager;
+    [HideInInspector] public PlayerEquipmentManager equipmentManager;
   
     protected override void Start()
     {
@@ -30,6 +31,7 @@ public class PlayerManager : CharacterManager
         movementManager = GetComponent<PlayerMovementManager>();
         animationManager = GetComponent<PlayerAnimationManager>();
         inventoryManager = GetComponent<PlayerInventoryManager>();
+        equipmentManager = GetComponent<PlayerEquipmentManager>();
     }
 
     public override void OnUpdate()

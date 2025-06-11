@@ -15,6 +15,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
     [Header("Player Action")]
     [SerializeField] private bool dodgeInput = false;
     [SerializeField] private bool jumpInput = false;
+    [SerializeField] private bool switchRightWeapon = false;
 
     private void Awake()
     {
@@ -78,6 +79,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
             inputActions.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
             inputActions.PlayerAction.Dodge.performed += i => dodgeInput = true;
             inputActions.PlayerAction.Jump.performed += i => jumpInput = true;
+            inputActions.PlayerAction.SwitchRightWeapon.performed += inputActions => switchRightWeapon = true;
 
         }
 
@@ -100,6 +102,7 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
         HandleMovementInput();
         HandleDodgeInput();
         HandleJumpAndFall();
+        HandleSwitchWeapon();   
     }
 
     private void HandleMovementInput()
@@ -149,6 +152,19 @@ public class PlayerInputManager : MonoBehaviour, IUpdatable
             }
         }
 
+    }
+
+    private void HandleSwitchWeapon()
+    {
+        if (switchRightWeapon)
+        {
+            switchRightWeapon = false;
+
+            if(player != null)
+            {
+                player.equipmentManager.switchRightWeapon();
+            } 
+        }
     }
     //Get set
     public float getMoveAmount() => moveAmount;

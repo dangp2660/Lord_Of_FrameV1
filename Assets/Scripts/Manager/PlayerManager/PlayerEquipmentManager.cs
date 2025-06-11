@@ -52,27 +52,43 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
     public void LoadRightWeapon()
     {
-        // Add null checks for player and inventoryManager
-        if (player == null || player.inventoryManager == null)
-        {
-            Debug.LogWarning("Player or InventoryManager is null in PlayerEquipmentManager");
-            return;
-        }
-        
+
+
         if (player.inventoryManager.currentRightWeapon != null)
         {
-            // Add null check for rightHandSlot
-            if (rightHandSlot == null)
-            {
-                Debug.LogError("Right hand slot is not assigned in PlayerEquipmentManager");
-                return;
-            }
-            
             RightHandWeapon = Instantiate(player.inventoryManager.currentRightWeapon.prefabs);
             rightHandSlot.LoadWeapon(RightHandWeapon);
             player.UIManager.setRightQuickSlot(player.inventoryManager.currentRightWeapon);
-
         }
+        else
+        {
+            player.UIManager.setRightQuickSlot(null);
+        }
+    }
+    public void switchRightWeapon()
+    {
+        player.animationManager.PlayerTargetActionAnimation(AnimationStringList.SwitchRightWeapon, 0.2f, false, true);
+        //unload current weapon
+        if(RightHandWeapon != null)
+        {
+            rightHandSlot.UnLoadWeapon();
+        }
+        //cycle weapon index
+        player.inventoryManager.rightWeaponIndex += 1; 
+        if (player.inventoryManager.rightWeaponIndex < 0 || 
+            player.inventoryManager.rightWeaponIndex >= player.inventoryManager.rightWeaponList.Length)
+        {
+            player.inventoryManager.rightWeaponIndex = 0;
+        }
+        if (player.inventoryManager.currentRightWeapon == null)
+        {
+            player.inventoryManager.rightWeaponIndex = 0;
+        }
+        
+        WeaponStatsManager selectedWeapon = player.inventoryManager.rightWeaponList[player.inventoryManager.rightWeaponIndex];
+        //upload new weapon
+        player.inventoryManager.currentRightWeapon = selectedWeapon;
+        LoadRightWeapon(); 
     }
     public void LoadLeftWeapon()
     {

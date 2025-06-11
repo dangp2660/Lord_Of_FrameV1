@@ -167,10 +167,11 @@ public class PlayerUIManager : MonoBehaviour
     //update Ui 
     public void updateQuickSlotUI()
     {
+
         //set icon right weapons
         if (rightWeapon != null)
         {
-            if(currentRightWeapon != null && currentRightWeapon.icon != null)
+            if(currentRightWeapon != null)
             {
                 rightWeapon.enabled = true;
                 rightWeapon.sprite = currentRightWeapon.icon;
@@ -178,8 +179,9 @@ public class PlayerUIManager : MonoBehaviour
             }
             else
             {
-                rightWeapon.enabled = false;
+                Debug.Log("Delete image");
                 rightWeapon.sprite = null;
+                rightWeapon.enabled = false;
                 rightWeapon.color = Color.clear;
             }
         }
