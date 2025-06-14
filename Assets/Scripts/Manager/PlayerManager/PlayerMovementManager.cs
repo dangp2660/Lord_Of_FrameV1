@@ -140,13 +140,13 @@ public class PlayerMovementManager : CharacterMovementManager
     public void AttempToPerformDodge()
     {
         if (Player.getIsPerformingAction()) return;
-        if(Player.currentEndurance < costDodge) { return;}
+        if (Player.currentEndurance < costDodge) { return; }
 
         Player.UIManager.useEndurence(costDodge);
         Debug.Log(Player.currentEndurance);
         if (PlayerInputManager.Instance.getMoveAmount() > 0)
         {
-            
+
             //Tính góc quay trước khi roll
             rollDirection = CameraController.instance.transform.forward * PlayerInputManager.Instance.movementInput.y;
             rollDirection += CameraController.instance.transform.right * PlayerInputManager.Instance.movementInput.x;
@@ -178,7 +178,7 @@ public class PlayerMovementManager : CharacterMovementManager
         verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
         // Phát animation nhảy
-        Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.Jump, 0.2f,true, true, true, true);
+        Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.Jump, 0.2f, true, true, true, true);
     }
 
 

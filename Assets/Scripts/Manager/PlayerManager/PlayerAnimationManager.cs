@@ -7,7 +7,7 @@ public class PlayerAnimationManager : CharacterAnimationManager, IUpdatable
     PlayerManager player;
 
     private void Awake()
-    {
+    {   
         player = GetComponent<PlayerManager>();
     }
     private void OnEnable()
