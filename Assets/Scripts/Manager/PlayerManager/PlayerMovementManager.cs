@@ -47,7 +47,7 @@ public class PlayerMovementManager : CharacterMovementManager
     private void CheckGrounded()
     {
         // Đặt vị trí của hình cầu ở dưới cùng của CharacterController
-        Vector3 spherePosition = transform.position + new Vector3(0, -Player.characterController.height / 2 + Player.characterController.radius, 0);
+        Vector3 spherePosition = transform.position + new Vector3(0, -Player.characterController.height / 2.5f + Player.characterController.radius, 0);
 
         // Kiểm tra xem hình cầu có chồng lấn với bất kỳ thứ gì trên lớp mặt đất không
         isGrounded = Physics.CheckSphere(spherePosition, groundCheckRadius, groundLayer);
@@ -98,7 +98,7 @@ public class PlayerMovementManager : CharacterMovementManager
             moveDirection.y = 0;
         }
 
-        float currentJump = isGrounded ? 1 : 0.4f;
+        float currentJump = isGrounded ? 1 : 1f;
 
         if (PlayerInputManager.Instance.getMoveAmount() > 0.5f)
         {

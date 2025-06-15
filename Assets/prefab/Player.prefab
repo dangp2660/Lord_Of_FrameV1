@@ -1537,7 +1537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentRightWeapon: {fileID: 0}
-  currentLeftWeapon: {fileID: 11400000, guid: 71642a32d020de54190f9da00877fe67, type: 2}
+  currentLeftWeapon: {fileID: 0}
   rightWeaponList:
   - {fileID: 11400000, guid: 9e46813a81c87a44cb0e3c241257d276, type: 2}
   - {fileID: 0}
@@ -3732,6 +3732,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4693822357699758522}
+  - component: {fileID: 7048887525679946691}
   m_Layer: 0
   m_Name: PT_RightHand
   m_TagString: Untagged
@@ -3760,6 +3761,20 @@ Transform:
   - {fileID: 748093966951652662}
   m_Father: {fileID: 893169038073480037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7048887525679946691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7767396859836366766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5377515fc094444093d76a3faf08dda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Slot: 0
+  currentWeaponModel: {fileID: 0}
 --- !u!1 &7800309861118671794
 GameObject:
   m_ObjectHideFlags: 0
