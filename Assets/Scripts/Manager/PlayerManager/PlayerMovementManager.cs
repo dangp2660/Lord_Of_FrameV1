@@ -146,7 +146,6 @@ public class PlayerMovementManager : CharacterMovementManager
         Debug.Log(Player.currentEndurance);
         if (PlayerInputManager.Instance.getMoveAmount() > 0)
         {
-
             //Tính góc quay trước khi roll
             rollDirection = CameraController.instance.transform.forward * PlayerInputManager.Instance.movementInput.y;
             rollDirection += CameraController.instance.transform.right * PlayerInputManager.Instance.movementInput.x;
@@ -156,11 +155,37 @@ public class PlayerMovementManager : CharacterMovementManager
             Quaternion playerDirection = Quaternion.LookRotation(rollDirection);
             Player.transform.rotation = playerDirection;
             Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.Roll, 0.2f, true, true);
-
         }
         else
         {
-            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.BackStep, 0.2f, true, true);
+            // Calculate backward direction for back step
+            rollDirection = -transform.forward;
+            rollDirection.y = 0;
+            rollDirection.Normalize();
+            
+            // Start back step animation with manual movement
+            Player.animationManager.PlayerTargetActionAnimation(AnimationStringList.BackStep, 0.2f, true, false);
+            
+            // Apply back step movement force
+            StartCoroutine(ApplyBackStepMovement());
+        }
+    }
+
+    // Add this new method to handle back step movement
+    private System.Collections.IEnumerator ApplyBackStepMovement()
+    {
+        float backStepDuration = 0.5f; // Duration of back step movement
+        float backStepSpeed = 8f; // Speed of back step movement
+        float elapsedTime = 0f;
+        
+        while (elapsedTime < backStepDuration && Player.getIsPerformingAction())
+        {
+            // Apply backward movement
+            Vector3 backStepMovement = rollDirection * backStepSpeed * Time.deltaTime;
+            Player.characterController.Move(backStepMovement);
+            
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
     }
 
@@ -196,4 +221,8 @@ public class PlayerMovementManager : CharacterMovementManager
 
     //get set
     public bool getIsGrounded() => isGrounded;
+
+    //set fource for back steop
+
+
 }
